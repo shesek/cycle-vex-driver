@@ -1,14 +1,8 @@
-import Rx from 'rx';
-import vex from 'vex-js/js/vex.dialog.js';
-import _ from 'lodash';
+import { Observable as Obs } from 'rxjs'
+import vex from 'vex-js'
 
-export default function makeVexDriver(className) {
-    vex.defaultOptions.className = className;
-    return function vexDriver(open$) {	
-	let _vex = Rx.Observable.fromCallback((id, method, options, cb) => {
-	    let _cb = (v) => cb({value: v, id: id});
-	    return vex[method](_.assign(options, {callback: _cb}));
-	});
-	return open$.flatMap(open => _vex(open.id, open.method || 'open', open.options));
-    };
-};
+module.exports = (defaultOpt={}) => open$ => {
+  let _vex = Obs.bindCallback((id, method, options, cb) =>
+    vex.dialog[method](Object.assign({}, defaultOpt, options, { callback: value => cb({ id, value }) })))
+  return Obs.from(open$).flatMap(opt => _vex(opt.id, opt.method || 'open', opt))
+}
