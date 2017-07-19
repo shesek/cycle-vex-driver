@@ -24,7 +24,8 @@
   "homepage": "https://github.com/nakaji-dayo/cycle-vex-driver#readme",
   "peerDependencies": {
     "rxjs": "^5.4.2",
-    "vex-js": "^4.0.0"
+    "vex-js": "^4.0.0",
+    "vex-dialog": "^1.0.7"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
